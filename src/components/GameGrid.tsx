@@ -5,35 +5,34 @@ import GameCardSkeleton from "./GameCardSkeleton";
 import GameCardConteiner from "./GameCardConteiner";
 import { GameQuery } from "../App";
 
-interface Props{
-  gameQuery: GameQuery
+interface Props {
+  gameQuery: GameQuery;
 }
 
-const GameGrid = ({gameQuery} : Props) => {
+const GameGrid = ({ gameQuery }: Props) => {
   const { data, error, isLoading } = useGames(gameQuery);
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
+  if (error) return <Text>{error}</Text>;
+
   return (
-    <>
-      {error && <Text>{error}</Text>}
-      <SimpleGrid
-        columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-        padding="10px"
-        spacing={6}
-      >
-        {isLoading &&
-          skeletons.map((skeleton) => (
-            <GameCardConteiner key={skeleton}>
-              <GameCardSkeleton />
-            </GameCardConteiner>
-          ))}
-        {data.map((game) => (
-          <GameCardConteiner key={game.id} >
-            <GameCard game={game} />
+    <SimpleGrid
+      columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+      padding="10px"
+      spacing={6}
+    >
+      {isLoading &&
+        skeletons.map((skeleton) => (
+          <GameCardConteiner key={skeleton}>
+            <GameCardSkeleton />
           </GameCardConteiner>
         ))}
-      </SimpleGrid>
-    </>
+      {data.map((game) => (
+        <GameCardConteiner key={game.id}>
+          <GameCard game={game} />
+        </GameCardConteiner>
+      ))}
+    </SimpleGrid>
   );
 };
 
